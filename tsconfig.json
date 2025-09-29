@@ -1,0 +1,49 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+
+    "noEmit": true,
+    "jsx": "react-jsx",
+    //    "baseUrl": ".",
+    "baseUrl": "./src/",
+    "paths": {
+      "@css/*": ["assets/css/*"],
+      "@image/*": ["assets/image/*"],
+      "@component/*": ["components/*"],
+      "@hook/*": ["hooks/*"],
+      "@query/*": ["querys/*"],
+      "@store/*": ["store/*"],
+      "@type/*": ["types/*"],
+      "@page/*": ["page/*"],
+      "@config/*": ["config/*"],
+      "@utils/*": ["utils/*"],
+    },
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/types",
+    ]
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/types/**/*",
+    "vite-env.d.ts",
+  ],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}

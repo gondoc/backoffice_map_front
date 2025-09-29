@@ -1,0 +1,254 @@
+.find-wrapper {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #f8f8f8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 1080px;
+    font-family: 'Pretendard', sans-serif;
+}
+
+.find-container {
+    width: 565px;
+    height: 917px;
+    background-color: #ffffff;
+    border-radius: 40px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.find-container .title-area {
+    width: 151px;
+    height: 135px;
+    padding-top: 124px;
+    padding-top: 50px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.find-container .title-area .logo {
+    width: 422px;
+    height: 30px;
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 30px;
+    letter-spacing: 3px;
+    color: #769FCD;
+    margin-bottom: 30px;
+}
+
+.find-container .title-area .title {
+    width: 422px;
+    color: #4D4D4D;
+    font-weight: 600;
+    font-size: 25px;
+}
+
+.find-container .find-btn-group {
+    position: relative;
+    width: 422px;
+    height: 56px;
+    border-radius: 100px;
+    background-color: #AAAAAA;
+}
+
+.find-container .find-btn-group .find-btn-id {
+    position: absolute;
+    width: 224px;
+    height: 56px;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    cursor: pointer;
+    transition: background-color 0.25s ease-out;
+}
+
+.find-container .find-btn-group .find-btn-id.active {
+    background-color: #769FCD;
+}
+
+.find-container .find-btn-group .find-btn-pw {
+    position: absolute;
+    width: 224px;
+    height: 56px;
+    right: 0;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    cursor: pointer;
+    transition: background-color 0.25s ease-out;
+}
+
+.find-container .find-btn-group .find-btn-pw.active {
+    background-color: #769FCD;
+}
+
+.find-container .find-area {
+    margin-top: 54px;
+    width: 422px;
+    height: 483px;
+}
+
+.find-container .find-area .input-area {
+    width: 422px;
+    height: 80px;
+    margin-bottom: 34px;
+}
+
+.find-container .find-area .input-area label {
+    display: block;
+    text-align: left;
+    margin-bottom: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 16px;
+    color: #111111;
+}
+
+.find-container .find-area .input-area input {
+    width: 406px;
+    height: 56px;
+    /*padding: 16px;*/
+    border-radius: 8px;
+    border: 1px solid #DCD9D9;
+    padding-left: 16px;
+    font-size: 17px;
+
+    &::placeholder {
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 24px;
+        text-align: left;
+        color: #4D4D4D;
+    }
+}
+
+.find-container .find-area .input-area input.isError {
+    border: 1px solid #FF7777;
+}
+
+.find-container .find-area .input-area span {
+    color: #FF7777;
+    font-size: 16px;
+    display: table;
+}
+
+.find-container .find-area .input-area .password-wrapper {
+    position: relative;
+
+    input {
+        font-size: 17px;
+    }
+
+    button {
+        position: absolute;
+        top: 50%;
+        bottom: 0;
+        right: 15px;
+        width: 116px;
+        height: 41px;
+        transform: translateY(-50%);
+        cursor: pointer;
+        background-color: #AAAAAA;
+        color: #FFFFFF;
+        border: none;
+        outline: none;
+        border-radius: 100px;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 24px;
+    }
+}
+
+.find-container .button-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.find-container .button-wrapper button {
+    position: absolute;
+
+    width: 422px;
+    height: 48px;
+    border-radius: 8px;
+    background-color: #769FCD;
+    border: none;
+    color: #FFFFFF;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 16px;
+    align-items: center;
+    cursor: pointer;
+    top: 50%;
+    transform: translateY(-50%);
+
+    &:disabled {
+        background-color: #AAAAAA;
+        cursor: not-allowed;
+    }
+}
+
+.find-wrapper .find-container .back-btn-wrapper {
+    display: flex;
+    width: 100%;
+    top: 0;
+    left: 0;
+    position: relative;
+}
+
+.find-wrapper .find-container .button-wrapper button .loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    cursor: default;
+
+    span {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        background: #4D4D4D;
+        border-radius: 50%;
+        animation: loading 1.3s 0s linear infinite;
+        margin: 2px;
+    }
+
+    span:nth-child(1) {
+        animation-delay: 0s;
+    }
+
+    span:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    span:nth-child(3) {
+        animation-delay: 0.4s;
+    }
+}
+
+
+.find-wrapper .find-container .back-btn-wrapper .back-btn {
+    cursor: pointer;
+
+    i {
+        display: inline-block;
+        width: 35px;
+        height: 35px;
+        margin: 15px 15px;
+        background-size: 100%;
+        background: url("../image/img_back_btn.svg") no-repeat;
+    }
+}
