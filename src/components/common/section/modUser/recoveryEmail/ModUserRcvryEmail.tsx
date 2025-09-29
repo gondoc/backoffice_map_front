@@ -7,7 +7,6 @@ import {StModBtn} from "@component/common/section/modUser/preview/ModUserInfoAre
 import {LoadingArea} from "@component/common/section/modUser/ReCheckPw";
 import {StNickInput} from "@component/common/section/modUser/nickname/ModUserNick";
 import {TStatus} from "@type/common.types";
-import {useQueryClient} from "@tanstack/react-query";
 import {useViewStoreActions} from "@store/viewStore";
 import {DialogRightBtn} from "@component/common/dialog/DialogArea";
 import {isEqual} from "@utils/commons";
@@ -20,8 +19,7 @@ interface IProps {
 
 const ModUserRcvryEmail = ({setStep}: IProps) => {
 
-    const queryClient = useQueryClient();
-    const {refetch, data: userInfo, isSuccess} = useCurrentUserQuery();
+    const {data: userInfo, isSuccess} = useCurrentUserQuery();
     const viewStoreActions = useViewStoreActions();
     const {mutate: reqRcvryEmail, isPending} = useRcvryEmailMutation(
         (res: boolean) => successHandler(res, "mod"),
@@ -61,14 +59,7 @@ const ModUserRcvryEmail = ({setStep}: IProps) => {
                 isOpen: true,
                 isJustConfirm: false,
                 status: "mod",
-                leftBtn: <>
-                    {/*<DialogLeftBtn*/}
-                    {/*    $status={"mod"}*/}
-                    {/*    onClick={() => {*/}
-                    {/*        viewStoreActions.initDialogStatus()*/}
-                    {/*    }}*/}
-                    {/*>확인</DialogLeftBtn>*/}
-                </>,
+                leftBtn: <></>,
                 rightBtn: <>
                     <DialogRightBtn
                         $status={"mod"}
@@ -149,7 +140,6 @@ const ModUserRcvryEmail = ({setStep}: IProps) => {
 }
 
 export default ModUserRcvryEmail
-
 
 const StModUserRcvryEmailWrapper = styled.form`
     position: absolute;

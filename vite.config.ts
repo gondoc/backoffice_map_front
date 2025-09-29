@@ -7,7 +7,7 @@ import removeConsole from "vite-plugin-remove-console";
 export default defineConfig(({mode}) => {
     const env = loadEnv(mode, process.cwd(), '');
 
-    const DOMAIN: string = env.VITE_API_BASE_URL;
+    const DOMAIN: string = env.VITE_SERVER_DOMAIN;
 
     return {
         // vite config

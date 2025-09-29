@@ -40,9 +40,9 @@ export const URL = {
         LOGIN: `${baseUrl}/${ctxPath}/api/auth/login`,
         REFRESH: `${baseUrl}/${ctxPath}/api/auth/refresh`,
         LOGOUT: `${baseUrl}/${ctxPath}/api/auth/logout`,
-        FIND_PW: `${baseUrl}/${ctxPath}/api/auth/forgotPw`,
-        RESET_PW: `${baseUrl}/${ctxPath}/api/auth/resetPw`,
-        CHANGE_PW:`${baseUrl}/${ctxPath}/api/auth/change-password`,
+        FIND_PW: `${baseUrl}/${ctxPath}/api/auth/forgot-pw`,
+        RESET_PW: `${baseUrl}/${ctxPath}/api/auth/reset-pw`,
+        CHANGE_PW:`${baseUrl}/${ctxPath}/api/auth/change-pw`,
     },
     USER: {
         INFO: `${baseUrl}/${ctxPath}/api/user/signUp`,

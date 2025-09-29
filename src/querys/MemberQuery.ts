@@ -406,18 +406,4 @@ export const useRcvryEmailVerifyMutation = (): UseMutationResult<boolean, AxiosE
                 console.log("useRcvryEmailVerifyMutation res ", data);
                 return data?.data;
             }),
-
-        // onSuccess: (res) => {
-        //     console.log("useRcvryEmailVerifyMutation onSuccess  res \n", res);
-        //     if (res && res.data?.code === 200 && res.data?.data === true) {
-        //         resultHandler(res.data?.data);
-        //     } else {
-        //         resultHandler(res.data?.data, res.data?.code, res.data?.data);
-        //     }
-        // },
-        //
-        // onError: ({response}) => {
-        //     console.log("useRcvryEmailVerifyMutation onError  res \n", response);
-        //     errorHandler(response?.status, response?.data);
-        // },
     });
