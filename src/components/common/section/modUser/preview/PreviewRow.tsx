@@ -34,13 +34,8 @@ const PreviewRow = ({
                 {labelNm}
             </FieldName>
             <InputWrapper>
-                <StValue id={labelId} icon={icon}>
+                <StValue id={labelId} $icon={icon}>
                     {value}
-                    {/* TODO 아이콘 이미지가 안나온다 고쳐라 */}
-                    {
-                        icon &&
-                        <i></i>
-                    }
                 </StValue>
                 {
                     btn &&
@@ -58,7 +53,7 @@ const PreviewRow = ({
 
 export default PreviewRow
 
-const StValue = styled.div<{ existBtn?: boolean, icon?: string }>`
+const StValue = styled.div<{ existBtn?: boolean, $icon?: string }>`
     display: flex;
     align-items: center;
     justify-content: center;
@@ -68,16 +63,16 @@ const StValue = styled.div<{ existBtn?: boolean, icon?: string }>`
     font-size: 17px;
     width: ${({existBtn}) => existBtn ? "320px" : "400px"};
 
-    i {
-        position: absolute;
-        left: -1200px;
-        width: 16px;
-        height: 16px;
-        background-image: url(${(props) => props.icon});
-        background-size: contain;
-        background-repeat: no-repeat;
-        background-position: center;
-        display: ${({icon}) => icon ? "block" : "none"};
-        background: red;
-    }
+    ${({$icon}) => {
+        if ($icon) {
+            return `
+                &:after {
+                    content: '';
+                    width: 23px;
+                    height: 23px;
+                    margin-left: 5px;
+                    background: url(${$icon}) no-repeat center/100%;
+                }`
+        }
+    }}
 `

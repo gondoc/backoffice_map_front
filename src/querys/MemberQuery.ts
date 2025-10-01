@@ -94,6 +94,20 @@ export const useCurrentUserQuery = (): UseQueryResult<IUserInfo, AxiosError> => 
     });
 };
 
+// RecoveryMail
+export const useCurrentRecoveryMailQuery = (): UseQueryResult<string, AxiosError> => {
+    return useQuery({
+        queryKey: [QueryKeys.member.email.recovery()],
+        queryFn: () => axios.get(Url.AUTH.RECOVERY, {
+            withCredentials: true
+        }),
+        enabled: false,
+        retry: false,
+        staleTime: 1000 * 60 * 60,
+        select: ({data}) => data?.data,
+    });
+};
+
 // logout
 export const useLogOutUserQuery = (): UseQueryResult<boolean, AxiosError> => {
     return useQuery({

@@ -7,6 +7,8 @@ import icon_failure from "@image/icon-failure.png";
 import icon_success from "@image/icon-success.png";
 
 const VerifyEmailPage = () => {
+    const channel: BroadcastChannel = new BroadcastChannel('email-verification');
+
     const [searchParams] = useSearchParams();
     const [message, setMessage] = useState('');
     const [countdown, setCountdown] = useState(5);
@@ -29,23 +31,28 @@ const VerifyEmailPage = () => {
         let timer: NodeJS.Timeout;
         if (isSuccess) {
             setMessage('인증되었습니다!');
+            channel.postMessage({type: "EMAIL_VERIFIED"})
+
             timer = setInterval(() => {
                 setCountdown(prev => {
                     if (prev <= 1) {
                         clearInterval(timer);
-                        window.close(); // 창 닫기
+                        closeWindow();
                         return 0;
                     }
                     return prev - 1;
                 });
             }, 1000);
-
         }
 
         return () => {
             clearInterval(timer)
         };
     }, [isSuccess]);
+
+    const closeWindow = () => {
+        window.close(); // 창 닫기
+    }
 
     return (
         <StVerifyEmailPageWrapper>
@@ -64,7 +71,7 @@ const VerifyEmailPage = () => {
                         <StText>
                             {countdown}초 후 페이지가 닫힙니다.
                         </StText>
-                        <StButton onClick={() => window.close()}>
+                        <StButton onClick={() => closeWindow()}>
                             지금 닫기
                         </StButton>
                     </>

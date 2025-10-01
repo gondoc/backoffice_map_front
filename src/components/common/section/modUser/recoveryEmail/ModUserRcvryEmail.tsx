@@ -1,6 +1,6 @@
 import {TModUserTab} from "@type/user.types";
 import styled from "styled-components";
-import {useCurrentUserQuery, useRcvryEmailMutation} from "@query/MemberQuery";
+import {useCurrentRecoveryMailQuery, useCurrentUserQuery, useRcvryEmailMutation} from "@query/MemberQuery";
 import React, {useMemo, useState} from "react";
 import {FieldName, FieldRow, InputWrapper} from "@component/common/section/modUser/ModUserSection";
 import {StModBtn} from "@component/common/section/modUser/preview/ModUserInfoArea";
@@ -15,41 +15,47 @@ import {DEBOUNCE_DELAY} from "@config/common.const";
 
 interface IProps {
     setStep: (step: TModUserTab) => void,
+    recoveryMail: string,
 }
 
-const ModUserRcvryEmail = ({setStep}: IProps) => {
+const ModUserRcvryEmail = ({setStep, recoveryMail}: IProps) => {
 
-    const {data: userInfo, isSuccess} = useCurrentUserQuery();
+    const {data: userInfo, isSuccess: userFetchSuccess, refetch} = useCurrentUserQuery();
     const viewStoreActions = useViewStoreActions();
+    const [helpMsg, setHelpMsg] = useState<string>("");
     const {mutate: reqRcvryEmail, isPending} = useRcvryEmailMutation(
         (res: boolean) => successHandler(res, "mod"),
         (errorCd?: string | number, msg?: string | undefined | unknown) => failHandler("mod", errorCd, msg)
     );
 
-    const [typing, setTyping] = useState<string>(isSuccess && userInfo?.recoveryEmail ? userInfo.recoveryEmail : "")
+    const [typing, setTyping] = useState<string>(recoveryMail);
     const debounceTyping = useDebounce<string>(typing, DEBOUNCE_DELAY);
 
     const validRcvryEmail = useMemo(() => {
         if (debounceTyping.length === 0) {
+            setHelpMsg("");
             return false;
         }
 
-        if (!isSuccess) {
+        if (!userFetchSuccess) {
+            setHelpMsg("");
             return false;
         }
 
         if (isEqual(debounceTyping, userInfo?.email)) {
+            setHelpMsg("접속 계정으로는 복구용 이메일로 등록 할 수 없습니다.");
             return false;
         }
 
         const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         const emailPatternCheck = emailPattern.test(debounceTyping);
         if (!emailPatternCheck) {
+            setHelpMsg("이메일 형식과 맞지 않습니다.");
             return false;
         }
 
         return true;
-    }, [isSuccess, debounceTyping, userInfo]);
+    }, [userFetchSuccess, debounceTyping, userInfo]);
 
     const successHandler = (res: boolean, status: TStatus) => {
         if (res) {
@@ -64,8 +70,9 @@ const ModUserRcvryEmail = ({setStep}: IProps) => {
                     <DialogRightBtn
                         $status={"mod"}
                         onClick={() => {
-                            viewStoreActions.initDialogStatus()
-                            setStep("default")
+                            refetch()
+                                .then(() => viewStoreActions.initDialogStatus())
+                                .finally(() => setStep("default"))
                         }}
                     >이동</DialogRightBtn>
                 </>,
@@ -82,7 +89,7 @@ const ModUserRcvryEmail = ({setStep}: IProps) => {
     }
 
     const reqRcvryEmailBtnClickHandler = () => {
-        if (!isSuccess || !validRcvryEmail) {
+        if (!userFetchSuccess || !validRcvryEmail) {
             return;
         }
 
@@ -107,34 +114,37 @@ const ModUserRcvryEmail = ({setStep}: IProps) => {
                 }
             </StNotiArea>
 
-            <FieldRow $isFirst={true}>
-                <FieldName htmlFor={`USER_RCVRY_EMAIL`}
-                           $height={"45px"}
-                           $width={"105px"}
-                           $padding={"0 0 0 5px"}
-                >
-                    복구용<br/>
-                    이메일 주소
-                </FieldName>
-                <InputWrapper>
-                    <StNickInput
-                        autoFocus={true}
-                        autoComplete={"off"}
-                        id={`USER_RCVRY_EMAIL`}
-                        value={typing}
-                        placeholder={"복구용 이메일 주소를 입력해주세요"}
-                        onChange={(e) => setTyping(e.target.value)}
-                    />
-                    <StModBtn
-                        type={"button"}
-                        $ml={"10px"}
-                        disabled={!validRcvryEmail || isPending}
-                        onClick={() => reqRcvryEmailBtnClickHandler()}
+            <StAreaWrapper>
+                <FieldRow $isFirst={true}>
+                    <FieldName htmlFor={`USER_RCVRY_EMAIL`}
+                               $height={"45px"}
+                               $width={"105px"}
+                               $padding={"0 0 0 5px"}
                     >
-                        {isPending ? LoadingArea() : userInfo?.recoveryEmail ? "변경" : "등록"}
-                    </StModBtn>
-                </InputWrapper>
-            </FieldRow>
+                        복구용<br/>
+                        이메일 주소
+                    </FieldName>
+                    <InputWrapper>
+                        <StNickInput
+                            autoFocus={true}
+                            autoComplete={"off"}
+                            id={`USER_RCVRY_EMAIL`}
+                            value={typing}
+                            placeholder={"복구용 이메일 주소를 입력해주세요"}
+                            onChange={(e) => setTyping(e.target.value)}
+                        />
+                        <StModBtn
+                            type={"button"}
+                            $ml={"10px"}
+                            disabled={!validRcvryEmail || isPending}
+                            onClick={() => reqRcvryEmailBtnClickHandler()}
+                        >
+                            {isPending ? LoadingArea() : userInfo?.recoveryEmail ? "변경" : "등록"}
+                        </StModBtn>
+                    </InputWrapper>
+                </FieldRow>
+                <StHelpMsgArea>{helpMsg}</StHelpMsgArea>
+            </StAreaWrapper>
         </StModUserRcvryEmailWrapper>
     )
 }
@@ -150,7 +160,7 @@ const StModUserRcvryEmailWrapper = styled.form`
     width: 1700px;
     height: 753px;
     padding-bottom: 130px;
-    margin-top: -50px;
+    margin-top: -25px;
     gap: 20px;
 `
 
@@ -165,6 +175,9 @@ const StNotiArea = styled.div`
     padding: 15px;
 `
 
+const StAreaWrapper = styled.div`
+
+`
 
 const StTitle = styled.div<{ $height: string }>`
     display: flex;
@@ -190,5 +203,14 @@ const StUserEmail = styled.span`
     margin: 0 10px;
     font-weight: 600;
     font-size: 17px;
+`
+
+const StHelpMsgArea = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    width: 422px;
+    height: 30px;
+    color: #ff0101;
 `
 

@@ -1,12 +1,15 @@
 import PreviewUserEmail from "@component/common/section/modUser/preview/PreviewUserEmail";
 import PreviewRow from "@component/common/section/modUser/preview/PreviewRow";
 import ModUserRoleCreateAt from "@component/common/section/modUser/preview/ModUserRoleCreateAt";
-import React from "react";
+import React, {useEffect} from "react";
 import {StModUserRowWrapper} from "@component/common/section/modUser/preview/ModUserInfoArea";
 import {TModUserTab} from "@type/user.types";
 import Withdrawal from "@component/common/section/modUser/withdrawal/Withdrawal";
 import {useCurrentUserQuery} from "@query/MemberQuery";
-import img_back_btn from "@image/img_back_btn.svg"
+import img_success from "@image/icon-success.png"
+import img_failure from "@image/icon-failure.png"
+import {DialogRightBtn} from "@component/common/dialog/DialogArea";
+import {useViewStoreActions} from "@store/viewStore";
 
 interface IProps {
     setStep: (step: TModUserTab) => void,
@@ -14,11 +17,39 @@ interface IProps {
 
 const UserPreview = ({setStep}: IProps) => {
 
-    const {data: userInfo} = useCurrentUserQuery();
-
+    const viewStoreActions = useViewStoreActions();
+    const {data: userInfo, refetch} = useCurrentUserQuery();
     const btnClickHandler = (step: TModUserTab) => {
         setStep(step)
     }
+
+    useEffect(() => {
+        const channel: BroadcastChannel = new BroadcastChannel('email-verification');
+        channel.onmessage = (event) => {
+            console.log(" event ", event)
+            if (event.data.type === "EMAIL_VERIFIED") {
+                refetch().then(() => viewStoreActions.setDialogStatus({
+                    title: "복구 이메일 등록 · 변경",
+                    msg: "복구용 이메일이 정상적으로 인증되었습니다!",
+                    isOpen: true,
+                    isJustConfirm: false,
+                    status: "mod",
+                    leftBtn: <></>,
+                    rightBtn: <>
+                        <DialogRightBtn
+                            $status={"mod"}
+                            onClick={() => viewStoreActions.initDialogStatus()}
+                        >확인</DialogRightBtn>
+                    </>,
+                    noCloseBtn: true,
+                }));
+            }
+        }
+
+        return (() => {
+            channel.close();
+        })
+    }, [])
 
     return (
         <>
@@ -45,7 +76,7 @@ const UserPreview = ({setStep}: IProps) => {
                     key={`USER_RECOVERY_EMAIL`}
                     labelId={`USER_RECOVERY_EMAIL`}
                     labelNm={"복구용 이메일"}
-                    icon={img_back_btn}
+                    icon={userInfo?.recoveryEmail ? userInfo?.isVerifyRcvryEmail ? img_success : img_failure : undefined}
                 />
             </StModUserRowWrapper>
 

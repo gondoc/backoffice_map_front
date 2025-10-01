@@ -18,6 +18,7 @@ export const QueryKeys = {
         nickCheck: (nick: string | null) => [...QueryKeys.member.member, "nickCheck", nick] as const,
         email: {
             codeSend: (email: string) => [...QueryKeys.member.member, "email", email] as const,
+            recovery: () => [...QueryKeys.member.member, "email", "recovery"] as const,
         },
         nick: () => [...QueryKeys.member.member, "nick"] as const,
         logout: () => [...QueryKeys.member.member, "logout"] as const,

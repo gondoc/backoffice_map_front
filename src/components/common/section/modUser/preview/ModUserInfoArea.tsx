@@ -1,5 +1,5 @@
-import React, {useState} from "react";
-import {useCurrentUserQuery} from "@query/MemberQuery";
+import React, {useEffect, useState} from "react";
+import {useCurrentRecoveryMailQuery, useCurrentUserQuery} from "@query/MemberQuery";
 import {TModUserTab} from "@type/user.types";
 import styled from "styled-components";
 import {MOD_USER_STEP_LABEL} from "@config/constant";
@@ -12,8 +12,13 @@ import ModUserRcvryEmail from "@component/common/section/modUser/recoveryEmail/M
 const ModUserInfoArea = () => {
 
     const {data: userInfo} = useCurrentUserQuery();
+    const {data: recoveryMail, refetch} = useCurrentRecoveryMailQuery();
 
     const [currentTab, setCurrentTab] = useState<TModUserTab>("default");
+
+    useEffect(() => {
+        if (userInfo?.isVerifyRcvryEmail) refetch()
+    }, [userInfo?.isVerifyRcvryEmail])
 
     return (
         <StModUserInfoWrapper>
@@ -33,7 +38,7 @@ const ModUserInfoArea = () => {
                     <ModUserNick userNick={userInfo?.nick ?? ""} userEmail={userInfo?.email ?? ""} setStep={setCurrentTab}/>}
 
                 {currentTab === "recoveryEmail" &&
-                    <ModUserRcvryEmail setStep={setCurrentTab}/>}
+                    <ModUserRcvryEmail setStep={setCurrentTab} recoveryMail={recoveryMail ? recoveryMail : ""}/>}
 
                 {currentTab === "password" &&
                     <ModUserPassword userEmail={userInfo?.email ?? ""} setStep={setCurrentTab}/>}

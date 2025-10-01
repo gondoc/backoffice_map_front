@@ -37,6 +37,7 @@ export const URL = {
     },
     AUTH: {
         ME: `${baseUrl}/${ctxPath}/api/auth/me`,
+        RECOVERY: `${baseUrl}/${ctxPath}/api/auth/recovery`,
         LOGIN: `${baseUrl}/${ctxPath}/api/auth/login`,
         REFRESH: `${baseUrl}/${ctxPath}/api/auth/refresh`,
         LOGOUT: `${baseUrl}/${ctxPath}/api/auth/logout`,
